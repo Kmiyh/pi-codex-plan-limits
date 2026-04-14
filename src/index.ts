@@ -170,20 +170,6 @@ export default function codexPlanLimitsExtension(pi: ExtensionAPI) {
 		await refresh(ctx);
 	}
 
-	pi.registerCommand("codex-limits", {
-		description: "Refresh Codex 5h/weekly limits in footer",
-		handler: async (_args, ctx) => {
-			if (!shouldShowForModel(ctx)) {
-				clearFooter(ctx);
-				if (ctx.hasUI) {
-					ctx.ui.notify("Codex limits are shown only when Pi uses the OpenAI Codex subscription model", "info");
-				}
-				return;
-			}
-			await refresh(ctx, { force: true, notify: true });
-		},
-	});
-
 	pi.on("session_start", async (_event, ctx) => {
 		activeCtx = ctx;
 		startPolling(ctx);
