@@ -1,6 +1,6 @@
 {
   "name": "@kmiyh/pi-codex-plan-limits",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Pi extension that shows live Codex plan usage: remaining 5h and weekly limits, reset times, and cached fallback snapshots.",
   "type": "module",
   "keywords": [

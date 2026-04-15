@@ -322,26 +322,7 @@ function buildFooterLines(
 		pwd = `${pwd} • ${sessionName}`;
 	}
 
-	let totalInput = 0;
-	let totalOutput = 0;
-	let totalCacheRead = 0;
-	let totalCacheWrite = 0;
-	for (const entry of ctx.sessionManager.getEntries()) {
-		if (entry.type === "message" && entry.message.role === "assistant") {
-			totalInput += entry.message.usage.input;
-			totalOutput += entry.message.usage.output;
-			totalCacheRead += entry.message.usage.cacheRead;
-			totalCacheWrite += entry.message.usage.cacheWrite;
-		}
-	}
-
-	const statsParts: string[] = [];
-	if (totalInput) statsParts.push(`↑${formatTokenCount(totalInput)}`);
-	if (totalOutput) statsParts.push(`↓${formatTokenCount(totalOutput)}`);
-	if (totalCacheRead) statsParts.push(`R${formatTokenCount(totalCacheRead)}`);
-	if (totalCacheWrite) statsParts.push(`W${formatTokenCount(totalCacheWrite)}`);
-	statsParts.push(buildLimitsText(snapshot, width));
-	let leftStats = statsParts.join(" ");
+	let leftStats = buildLimitsText(snapshot, width);
 	let leftStatsWidth = visibleWidth(leftStats);
 	if (leftStatsWidth > width) {
 		leftStats = truncateToWidth(leftStats, width, "...");
@@ -404,14 +385,6 @@ function buildLimitsText(snapshot: LimitsSnapshot | undefined, width: number): s
 
 function sanitizeStatusText(text: string): string {
 	return text.replace(/[\r\n\t]/g, " ").replace(/ +/g, " ").trim();
-}
-
-function formatTokenCount(count: number): string {
-	if (count < 1000) return count.toString();
-	if (count < 10000) return `${(count / 1000).toFixed(1)}k`;
-	if (count < 1000000) return `${Math.round(count / 1000)}k`;
-	if (count < 10000000) return `${(count / 1000000).toFixed(1)}M`;
-	return `${Math.round(count / 1000000)}M`;
 }
 
 function formatCompactWindow(
